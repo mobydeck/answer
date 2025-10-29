@@ -4,3 +4,4 @@ github.com/apache/answer-plugins/captcha-basic@latest
 github.com/apache/answer-plugins/embed-basic@latest
 github.com/apache/answer-plugins/search-algolia@latest
 github.com/apache/answer-plugins/render-markdown-codehighlight@latest
+github.com/apache/answer-plugins/quick-links@latest

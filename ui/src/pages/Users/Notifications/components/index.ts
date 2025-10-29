@@ -17,30 +17,7 @@
  * under the License.
  */
 
-.answer-container {
-  width: 100%;
-  min-height: calc(100vh - 95px - 62px);
-  max-width: 1072px;
-}
+import Inbox from './Inbox';
+import Achievements from './Achievements';
 
-.page-right-side {
-  flex: none;
-  width: 300px;
-  box-sizing: content-box;
-}
-
-// lg
-@media screen and (max-width: 1199.9px) {
-  .answer-container {
-    padding-left: 12px;
-    padding-right: 12px;
-  }
-
-  .page-main {
-    max-width: 100%;
-  }
-  .page-right-side {
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
+export { Inbox, Achievements };
