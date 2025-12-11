@@ -234,7 +234,7 @@ backend:
         other: Нет разрешения на обновление.
       content_cannot_empty:
         other: Content cannot be empty.
-      content_less_than_minumum:
+      content_less_than_minimum:
         other: Not enough content entered.
     rank:
       fail_to_meet_the_condition:
@@ -698,7 +698,7 @@ backend:
         name:
           other: Anniversary
         desc:
-          other: Active member for a year, posted at least once.
+          other: Активный участник на год, опубликовал по крайней мере один раз.
       appreciated:
         name:
           other: Appreciated
@@ -1445,7 +1445,7 @@ ui:
       content: Are you sure you want to list?
     unlist:
       confirm_btn: Убрать из списка
-      title:
+      title: Unlist this post
       content: Are you sure you want to unlist?
     pin:
       title: Закрепить сообщение
@@ -1768,6 +1768,7 @@ ui:
     branding: Фирменное оформление
     legal: Правовая информация
     write: Написать
+    terms: Terms
     tos: Пользовательское Соглашение
     privacy: Конфиденциальность
     seo: SEO
