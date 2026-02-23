@@ -367,9 +367,16 @@ func (qs *QuestionCommon) FormatQuestionsPage(
 	formattedQuestions = make([]*schema.QuestionPageResp, 0)
 	questionIDs := make([]string, 0)
 	userIDs := make([]string, 0)
+
+	isShortLink := qs.isShortLinkEnabled(ctx)
+
 	for _, questionInfo := range questionList {
+		questionID := questionInfo.ID
+		if isShortLink {
+			questionID = uid.EnShortID(questionInfo.ID)
+		}
 		t := &schema.QuestionPageResp{
-			ID:               questionInfo.ID,
+			ID:               questionID,
 			CreatedAt:        questionInfo.CreatedAt.Unix(),
 			Title:            questionInfo.Title,
 			UrlTitle:         htmltext.UrlTitle(questionInfo.Title),
@@ -444,7 +451,7 @@ func (qs *QuestionCommon) FormatQuestionsPage(
 	}
 
 	for _, item := range formattedQuestions {
-		tags, ok := tagsMap[item.ID]
+		tags, ok := tagsMap[uid.DeShortID(item.ID)]
 		if ok {
 			item.Tags = tags
 		} else {

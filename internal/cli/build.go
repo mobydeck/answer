@@ -28,6 +28,7 @@ import (
 	"os/exec"
 	"path"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"text/template"
 
@@ -61,7 +62,7 @@ func main() {
 `
 	goModTpl = `module answer
 
-go 1.23
+go 1.25
 `
 )
 
@@ -241,14 +242,10 @@ func movePluginToVendor(b *buildingMaterial) (err error) {
 
 // copyUIFiles copy ui files from answer module to tmp dir
 func copyUIFiles(b *buildingMaterial) (err error) {
-	goListCmd := b.newExecCmd("go", "list", "-mod=mod", "-m", "-f", "{{.Dir}}", "github.com/apache/answer")
-	buf := new(bytes.Buffer)
-	goListCmd.Stdout = buf
-	if err = goListCmd.Run(); err != nil {
-		return fmt.Errorf("failed to run go list: %w", err)
+	answerDir, err := os.Getwd()
+	if err != nil {
+		return fmt.Errorf("failed to get current working directory: %w", err)
 	}
-
-	answerDir := strings.TrimSpace(buf.String())
 	goModUIDir := filepath.Join(answerDir, "ui")
 	localUIBuildDir := filepath.Join(b.tmpDir, "vendor/github.com/apache/answer/ui/")
 	// The node_modules folder generated during development will interfere packaging, so it needs to be ignored.
@@ -495,9 +492,9 @@ func formatUIPluginsDirName(dirPath string) {
 func buildBinary(b *buildingMaterial) (err error) {
 	versionInfo := b.originalAnswerInfo
 	cmdPkg := "github.com/apache/answer/cmd"
-	ldflags := fmt.Sprintf("-X %s.Version=%s -X %s.Revision=%s -X %s.Time=%s",
-		cmdPkg, versionInfo.Version, cmdPkg, versionInfo.Revision, cmdPkg, versionInfo.Time)
-	err = b.newExecCmd("go", "build",
+	ldflags := fmt.Sprintf("-s -w -X %s.Version=%s -X %s.Revision=%s -X %s.Time=%s -X %s.GoVersion=%s -extldflags -static",
+		cmdPkg, versionInfo.Version, cmdPkg, versionInfo.Revision, cmdPkg, versionInfo.Time, cmdPkg, runtime.Version())
+	err = b.newExecCmd("go", "build", "-trimpath",
 		"-ldflags", ldflags, "-o", b.outputPath, ".").Run()
 	if err != nil {
 		return err

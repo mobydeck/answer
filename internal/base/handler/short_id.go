@@ -25,7 +25,7 @@ import (
 	"github.com/apache/answer/internal/base/constant"
 )
 
-// GetEnableShortID get language from header
+// GetEnableShortID gets the ShortID enable flag from context
 func GetEnableShortID(ctx context.Context) bool {
 	flag, ok := ctx.Value(constant.ShortIDContextKey).(bool)
 	if ok {
